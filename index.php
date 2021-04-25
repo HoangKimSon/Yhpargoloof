@@ -9,9 +9,11 @@
 		.text-center {
 			text-align: center;
 		}
-
 		.text-left {
 			text-align: left;
+		}
+		.text-red {
+			color: #ff0000;
 		}
 	</style>
 </head>

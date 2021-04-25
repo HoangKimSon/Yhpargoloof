@@ -1,3 +1,21 @@
+<!-- Form generate link -->
+<form action="?m=doCreate" method="POST">
+	<label>Your link: </label> <input type="text" name="link">
+	<button type="submit">Generate link</button>
+	<?php if(isset($_GET['mess']) && $_GET['mess'] == 'd'): ?>
+	<p class="text-red"> This link is already exist, please input other link</p>
+	<?php endif;?>
+
+	<?php if(isset($newLink)): ?>
+	<p class=""> Your new link is
+		<a href="<?= $newLink['origin_link'] ?>" target="_blank">
+			<?= $_SERVER['SERVER_NAME'] ."/" . $newLink['shorten_link']?>
+		</a>
+	</p>
+	<?php endif;?>
+</form>
+<!-- /Form generate link -->
+
 <!-- Show list link -->
 <?php if($listLink): ?>
 <table>

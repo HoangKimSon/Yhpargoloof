@@ -27,6 +27,22 @@ class PDODriver
 		}
 	}
 
+	// get primary key of table
+	private function __getPrimaryKey($table)
+	{
+		$colums = array();
+		$sql = "SHOW KEYS FROM {$table} WHERE Key_name = 'PRIMARY'";
+		$stmt = $this->conn->prepare($sql);
+
+		if ($stmt) {
+			if ($stmt->execute()) {
+				$colums = $stmt->fetch(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $colums['Column_name'];
+	}
+
 	// get all data
 	public function getAllData($table, $start, $limit)
 	{
@@ -35,6 +51,78 @@ class PDODriver
 		if ($stmt) {
 			if ($stmt->execute()) {
 				$this->__data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data;
+	}
+
+	// get all data by one field
+	function getDataByName($table, $field, $value)
+	{
+		$sql  = "SELECT * FROM {$table} WHERE {$field} = :{$field}";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			$stmt->bindParam(":{$field}", $value, PDO::PARAM_STR);
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetch(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data;
+	}
+
+	// get one data by primary key
+	public function getDataById($table, $where)
+	{
+		$prKey = $this->__getPrimaryKey($table);
+		$sql  = "SELECT * FROM {$table} WHERE {$prKey} = :{$prKey}";
+		$stmt = $this->conn->prepare($sql);
+
+		if ($stmt) {
+			$stmt->bindParam(":{$prKey}", $where, PDO::PARAM_STR);
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetch(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data;
+	}
+
+	// insert one record to database
+	public function insert($data, $table)
+	{
+		$filedKey = '';
+		$filedPram = '';
+
+		foreach ($data as $key => $value) {
+			$filedKey .= ($filedKey == '') ? $key : ',' . $key;
+			$filedPram .= ($filedPram == '') ? ':' . $key : ',' . ':' . $key;
+		}
+		$sql = "INSERT INTO {$table}({$filedKey}) VALUES({$filedPram})";
+		$stmt = $this->conn->prepare($sql);
+
+		if ($stmt) {
+			foreach ($data as $k => &$v) {
+				$stmt->bindParam(':' . $k, $v, PDO::PARAM_STR);
+			}
+			if ($stmt->execute()) {
+				$this->__flag = TRUE;
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__flag;
+	}
+
+	// get lastest inserted data
+	function getLastInsertedData($table)
+	{
+		$primaryKey = $this->__getPrimaryKey($table);
+		$sql  = "SELECT * FROM {$table} WHERE {$primaryKey} = LAST_INSERT_ID();";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetch(PDO::FETCH_ASSOC);
 			}
 			$stmt->closeCursor();
 		}
