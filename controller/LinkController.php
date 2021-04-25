@@ -64,6 +64,25 @@ class LinkController
 			return header("Location:index.php");
 		}
 	}
+
+	 // increase number click to link, get data from $_POST
+	function doCount()
+	{
+		// validate
+		$linkId = isset($_GET['id']) ? $_GET['id'] : 0;
+
+		$currentLink = $this->__linkModel->getLinkById($linkId);
+		// dd($currentLink);
+		if (!$currentLink) {
+			return;
+		}
+
+		$newLink = [
+			'visit_time' => $currentLink['visit_time'] + 1,
+			'id' => $currentLink['id']
+		];
+		return $this->__linkModel->updateLink($newLink);
+	}
 }
 $obj = new LinkController();
 $method = isset($_GET['m']) ? trim($_GET['m']) : 'index';

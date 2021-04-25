@@ -8,7 +8,8 @@
 
 	<?php if(isset($newLink)): ?>
 	<p class=""> Your new link is
-		<a href="<?= $newLink['origin_link'] ?>" target="_blank">
+		<a id="<?= $newLink['id'] ?>" href="<?= $newLink['origin_link'] ?>" target="_blank"
+			onclick="increaseCounter(this.id)">
 			<?= $_SERVER['SERVER_NAME'] ."/" . $newLink['shorten_link']?>
 		</a>
 	</p>
@@ -23,6 +24,7 @@
 		<td width="5%">Id</td>
 		<td width="30%">Origin link</td>
 		<td width="30%">Shorten link</td>
+		<td width="5%">Visit time</td>
 		<td width="15%">Created at</td>
 		<td width="15%">Updated at</td>
 	</tr>
@@ -40,6 +42,9 @@
 			</a>
 		</td>
 		<td class="text-center">
+			<?= $link['visit_time'] ?>
+		</td>
+		<td class="text-center">
 			<?= $link['created_at'] ?>
 		</td>
 		<td class="text-center">
@@ -50,3 +55,19 @@
 </table>
 <?php endif; ?>
 <!-- /Show list link -->
+
+<script type="text/javascript">
+	const queryString = new URLSearchParams(window.location.search);
+	function increaseCounter(link) {
+		const linkId = queryString.get('link') || link;
+		let xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				console.info("Get data from server", this.responseText);
+				location.reload(true);
+			}
+		};
+		xhttp.open("GET", `?m=doCount&id=${linkId}`, true);
+		xhttp.send();
+	}
+</script>

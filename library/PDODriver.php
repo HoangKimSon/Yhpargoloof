@@ -89,6 +89,21 @@ class PDODriver
 		return $this->__data;
 	}
 
+	// get lastest inserted data
+	function getLastInsertedData($table)
+	{
+		$primaryKey = $this->__getPrimaryKey($table);
+		$sql  = "SELECT * FROM {$table} WHERE {$primaryKey} = LAST_INSERT_ID();";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetch(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data;
+	}
+
 	// insert one record to database
 	public function insert($data, $table)
 	{
@@ -114,19 +129,30 @@ class PDODriver
 		return $this->__flag;
 	}
 
-	// get lastest inserted data
-	function getLastInsertedData($table)
+	// update one record in database
+	public function update($table, $data, $where)
 	{
-		$primaryKey = $this->__getPrimaryKey($table);
-		$sql  = "SELECT * FROM {$table} WHERE {$primaryKey} = LAST_INSERT_ID();";
+		$flideValue = '';
+		foreach ($data as $key => $val) {
+			$flideValue .= ($flideValue == '') ? "{$key} = :{$key}" : ", {$key} = :{$key}";
+		}
+		$prKey = $this->__getPrimaryKey($table);
+		$sql  = "UPDATE {$table} SET {$flideValue} WHERE {$prKey} = :{$prKey}";
 		$stmt = $this->conn->prepare($sql);
+
 		if ($stmt) {
+			// bind param to data fields
+			foreach ($data as $k => &$v) {
+				$stmt->bindParam(":{$k}", $v, PDO::PARAM_STR);
+			}
+			// bind param to primary key
+			$stmt->bindParam(":{$prKey}", $where, PDO::PARAM_STR);
 			if ($stmt->execute()) {
-				$this->__data = $stmt->fetch(PDO::FETCH_ASSOC);
+				$this->__flag = TRUE;
 			}
 			$stmt->closeCursor();
 		}
-		return $this->__data;
+		return $this->__flag;
 	}
 
 	// disconnect database

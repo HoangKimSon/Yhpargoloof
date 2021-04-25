@@ -30,6 +30,11 @@ class LinkModel extends PDODriver
 		return $this->getDataById('link', $id);
 	}
 
+	function updateLink($link)
+	{
+		return $this->update('link', $link, $link['id']);
+	}
+
 	function getLastInsertedLink()
 	{
 		return $this->getLastInsertedData('link');
