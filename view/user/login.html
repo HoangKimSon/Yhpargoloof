@@ -1,4 +1,4 @@
-<form action="?c=user&m=doRegister" method="POST">
+<form action="?c=user&m=doLogin" method="POST">
 	<div>
 		<label for="username">Username:</label>
 		<input type="text" name="username">
@@ -7,16 +7,16 @@
 		<label for="password">Password:</label>
 		<input type="password" name="password">
 	</div>
-	<button type="submit">Register</button>
-	<button> <a class="link-none-style" href="?c=user&m=login">Login</a> </button>
+	<button type="submit">Login</button>
+	<button> <a class="link-none-style" href="?c=user&m=register">Register</a> </button>
 </form>
 
 <!-- Show all error -->
 <?php if(isset($_GET['mess']) && $_GET['mess'] == 'm'): ?>
-<p>Username or password must not be empty</p>
+<p>Username or password must not empty</p>
 <?php endif; ?>
 
-<?php if(isset($_GET['mess']) && $_GET['mess'] == 'd'): ?>
-<p>User is exist alrady</p>
+<?php if(isset($_GET['mess']) && $_GET['mess'] == 'nf'): ?>
+<p>Username or password is not corrected</p>
 <?php endif; ?>
 <!-- /Show all error -->

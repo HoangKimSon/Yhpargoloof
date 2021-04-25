@@ -5,6 +5,8 @@
  * 
  * App routes, all router url go through this class. Catch query param c in url to define controller
  */
+session_start();
+
 class Router
 {
   function index()

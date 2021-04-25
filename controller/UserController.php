@@ -31,6 +31,10 @@ class UserController
 	 */
 	function register()
 	{
+		if (isset($_SESSION['username'])) {
+			return header("Location:index.php");
+		}
+
 		require BASE_PROJECT . "view/user/register.html";
 	}
 
@@ -59,8 +63,41 @@ class UserController
 		return header("Location:index.php?c=user&m=login");
 	}
 
-	function login(){
-		echo("register succesful");
+	// show login form
+	function login()
+	{
+		if (isset($_SESSION['username'])) {
+			return header("Location:index.php");
+		}
+		require BASE_PROJECT . "view/user/login.html";
+	}
+
+	// login user, get data from $_POST
+	function doLogin()
+	{
+		if ($_SERVER["REQUEST_METHOD"] != "POST") {
+			return header("Location:index.php");
+		}
+
+		// validate
+		$username = isset($_POST['username']) ? trim($_POST['username']) : "";
+		$password = isset($_POST['password']) ? trim($_POST['password']) : "";
+		if (!$username || !$password) {
+			return header("Location:index.php?c=user&m=login&mess=m");
+		}
+
+		$user = [
+			'username' => $username,
+			'password' => md5($password)
+		];
+		$authenUser = $this->__userModel->login($user);
+		if ($authenUser) { // login succesful
+			$_SESSION["username"] = $authenUser["username"];
+			$_SESSION["userId"] = $authenUser["id"];
+			return header("Location:index.php");
+		} else {
+			return header("Location:index.php?c=user&m=login&mess=nf");
+		}
 	}
 }
 
