@@ -1,0 +1,22 @@
+<form action="?c=user&m=doRegister" method="POST">
+	<div>
+		<label for="username">Username:</label>
+		<input type="text" name="username">
+	</div>
+	<div>
+		<label for="password">Password:</label>
+		<input type="text" name="password">
+	</div>
+	<button type="submit">Register</button>
+	<button> <a class="link-none-style" href="?c=user&m=login">Login</a> </button>
+</form>
+
+<!-- Show all error -->
+<?php if(isset($_GET['mess']) && $_GET['mess'] == 'm'): ?>
+<p>Username or password must not be empty</p>
+<?php endif; ?>
+
+<?php if(isset($_GET['mess']) && $_GET['mess'] == 'd'): ?>
+<p>User is exist alrady</p>
+<?php endif; ?>
+<!-- /Show all error -->

@@ -11,6 +11,11 @@ class Router
   {
     require_once "./controller/LinkController.php";
   }
+
+  function user()
+  {
+    require_once "./controller/UserController.php";
+  }
 }
 $obj = new Router();
 $con = isset($_GET['c']) ? trim($_GET['c']) : 'index';
