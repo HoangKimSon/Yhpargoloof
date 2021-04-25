@@ -9,6 +9,7 @@ class Router
 {
   function index()
   {
+    require_once "./controller/LinkController.php";
   }
 }
 $obj = new Router();
