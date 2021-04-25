@@ -7,14 +7,18 @@
  */
 
 require_once BASE_PROJECT . "model/LinkModel.php";
+require_once BASE_PROJECT . "model/UserLinkModel.php";
 require_once BASE_PROJECT . "library/Paging.php";
 
 class LinkController
 {
 	private $__linkModel;
+	private $__userLinkModel;
+
 	function __construct()
 	{
 		$this->__linkModel = new LinkModel();
+		$this->__userLinkModel = new UserLinkModel();
 	}
 
 	// Get all links in database
@@ -66,6 +70,15 @@ class LinkController
 		];
 		if ($this->__linkModel->insertLink($data)) { // insert link successful
 			$newLink = $this->__linkModel->getLastInsertedLink()['id'];
+
+			// associated user id and link id
+			if ($_SESSION['userId']) {
+				$userLink = [
+					'user_id' => $_SESSION['userId'],
+					'link_id' => $newLink
+				];
+				$this->__userLinkModel->insertUserLink($userLink);
+			}
 
 			return header("Location:index.php?link={$newLink}");
 		} else {
