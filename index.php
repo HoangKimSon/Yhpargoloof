@@ -15,6 +15,18 @@
 		.text-red {
 			color: #ff0000;
 		}
+		.pagination li {
+			text-decoration: none;
+			display: inline-block;
+			margin: 0px 10px;
+		}
+		.link-none-style {
+			text-decoration: none;
+			color: #000000;
+		}
+		.link-none-style:hover {
+			cursor: unset;
+		}
 	</style>
 </head>
 

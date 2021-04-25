@@ -155,6 +155,20 @@ class PDODriver
 		return $this->__flag;
 	}
 
+	// count record in table
+	public function countAllData($table)
+	{
+		$sql  = "SELECT COUNT(*) AS 'total_record' FROM {$table}";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data[0]['total_record'];
+	}
+
 	// disconnect database
 	function __destruct()
 	{

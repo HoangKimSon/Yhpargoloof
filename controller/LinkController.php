@@ -7,6 +7,7 @@
  */
 
 require_once BASE_PROJECT . "model/LinkModel.php";
+require_once BASE_PROJECT . "library/Paging.php";
 
 class LinkController
 {
@@ -23,8 +24,15 @@ class LinkController
 			$newLink = $this->__linkModel->getLinkById($_GET['link']); // use in html file
 		}
 
+		// paging
+		$pagination = new Paging();
+		$totalRecord = $this->__linkModel->countAllLink();
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		$link  = $pagination->create_links('', array('page' => $page));
+		$pagView = $pagination->pagenations($link, $totalRecord, $page, ROW_LIMIT);
+
 		// list link on view
-		$listLink = $this->__linkModel->getAllLink(); //use in html file
+		$listLink = $this->__linkModel->getAllLink($pagView['start'], $pagView['limit']); //use in html file
 		// dd($listLink);
 		require_once "./view/link/view.html";
 	}
@@ -65,7 +73,7 @@ class LinkController
 		}
 	}
 
-	 // increase number click to link, get data from $_POST
+	// increase number click to link, get data from $_POST
 	function doCount()
 	{
 		// validate
