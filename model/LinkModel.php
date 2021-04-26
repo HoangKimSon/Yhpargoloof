@@ -20,9 +20,9 @@ class LinkModel extends PDODriver
 		return $this->getAllData('link', $start, $limit);
 	}
 
-	function geLinkByName($originLink)
+	function getLinkByName($field, $value)
 	{
-		return $this->getDataByName('link', 'origin_link', $originLink);
+		return $this->getDataByName('link', $field, $value);
 	}
 
 	function getLinkById($id)

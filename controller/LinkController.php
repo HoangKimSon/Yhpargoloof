@@ -41,6 +41,19 @@ class LinkController
 		require_once "./view/link/view.html";
 	}
 
+	function redirect()
+	{
+		$shortenLink = $_GET['link'];
+		$link = $this->__linkModel->getLinkByName("shorten_link", $shortenLink);
+		if ($link) {
+			return header("Location: {$link['origin_link']}");
+		} else {
+			$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			return header("Location: http://$host$uri/index.php?mess=nf");
+		}
+	}
+
 	// create new link, get data from $_POST
 	function doCreate()
 	{
@@ -156,7 +169,7 @@ class LinkController
 			array_push($linkIds, $value['link_id']); // get all link Id to array
 		}
 		$conditionRaw = "(" . implode(",", $linkIds) . ")"; // generate sql condition
-		
+
 		$this->__linkModel->removeUnuseLink($conditionRaw);
 	}
 }
@@ -164,4 +177,4 @@ if (php_sapi_name() != "cli") {
 	$obj = new LinkController();
 	$method = isset($_GET['m']) ? trim($_GET['m']) : 'index';
 	$obj->$method();
-} 
+}

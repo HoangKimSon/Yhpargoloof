@@ -2,7 +2,8 @@
 <a href="?c=user&m=login">Login</a>
 <a href="?c=user&m=register">Register</a>
 <?php else: ?>
-<p>Hello <?php echo $_SESSION['username']; ?>. You can see all your link at <a href="?c=user&m=userLink">here</a>
+<p>Hello
+	<?php echo $_SESSION['username']; ?>. You can see all your link at <a href="?c=user&m=userLink">here</a>
 </p>
 <?php endif; ?>
 
@@ -10,20 +11,26 @@
 <form action="?m=doCreate" method="POST">
 	<label>Your link: </label> <input type="text" name="link">
 	<button type="submit">Generate link</button>
-
-<!-- Show all error -->
-	<?php if(isset($newLink)): ?>
-	<p class=""> Your new link is
-		<a id="<?= $newLink['id'] ?>" href="<?= $newLink['origin_link'] ?>" target="_blank"
-			onclick="increaseCounter(this.id)">
-			<?= $_SERVER['SERVER_NAME'] ."/" . $newLink['shorten_link']?>
-		</a>
-	</p>
-	<?php endif;?>
-<!-- /Show all error -->
-
 </form>
 <!-- /Form generate link -->
+
+<!-- Show new short link -->
+<?php if(isset($newLink)): ?>
+<p class=""> Your new link is
+	<a id="<?= $newLink['id'] ?>" href="<?= $newLink['origin_link'] ?>" target="_blank"
+		onclick="increaseCounter(this.id)">
+		<?= $_SERVER['SERVER_NAME'] ."/s/" . $newLink['shorten_link']?>
+	</a>
+</p>
+<?php endif;?>
+<!-- /Show new short linkr -->
+
+<!-- Show all error -->
+<?php if(isset($_GET['mess']) && $_GET['mess'] == 'nf'): ?>
+<p class="text-red">Your short link is not corrected</p>
+<?php endif; ?>
+<!-- /Show all error -->
+
 
 <!-- Show list link -->
 <?php if($listLink): ?>
@@ -46,7 +53,7 @@
 		</td>
 		<td class="text-center">
 			<a id="<?= $link['id'] ?>" href="<?= $link['origin_link'] ?>" target="_blank" onclick="increaseCounter(this.id)">
-				<?= $_SERVER['SERVER_NAME'] ."/" . $link['shorten_link'] ?>
+				<?= $_SERVER['SERVER_NAME'] ."/s/" . $link['shorten_link'] ?>
 			</a>
 		</td>
 		<td class="text-center">
