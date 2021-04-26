@@ -114,6 +114,15 @@ class UserController
 		$linkList = $this->__userLinkModel->getUserLink($_SESSION["userId"]);
 		require BASE_PROJECT . "view/user/userLink.html";
 	}
+
+	 // logout user
+	function doLogout()
+	{
+		// remove session
+		unset($_SESSION['username']);
+		unset($_SESSION['userId']);
+		return header("Location:index.php?c=user&m=login");
+	}
 }
 
 $obj = new UserController();

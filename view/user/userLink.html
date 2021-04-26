@@ -3,8 +3,8 @@
 </p>
 
 <!-- Naviagtion -->
-<p>If you want to generate new link, please click <a href="index.php">here.</a>
-</p>
+<p>If you want to generate new link, please click <a href="index.php">here.</a></p>
+<p>If you want to logout, please <a href="?c=user&m=doLogout">Click here</a>.</p>
 <!-- /Naviagtion -->
 
 <p>This is all your link:</p>
@@ -19,7 +19,7 @@
     <td width="5%"></td>
   </tr>
   <?php $count = 0; foreach($linkList as $key => $link): $count++ ?>
-  <tr  class="text-center">
+  <tr class="text-center">
     <td>
       <?= $count ?>
     </td>
@@ -46,17 +46,17 @@
 <!-- /Show list link -->
 
 <script type="text/javascript">
-	const queryString = new URLSearchParams(window.location.search);
-	function increaseCounter(link) {
-		const linkId = queryString.get('link') || link;
-		let xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function () {
-			if (this.readyState == 4 && this.status == 200) {
-				console.info("Get data from server", this.responseText);
-				location.reload(true);
-			}
-		};
-		xhttp.open("GET", `?m=doCount&id=${linkId}`, true);
-		xhttp.send();
-	}
+  const queryString = new URLSearchParams(window.location.search);
+  function increaseCounter(link) {
+    const linkId = queryString.get('link') || link;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        console.info("Get data from server", this.responseText);
+        location.reload(true);
+      }
+    };
+    xhttp.open("GET", `?m=doCount&id=${linkId}`, true);
+    xhttp.send();
+  }
 </script>
