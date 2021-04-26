@@ -150,6 +150,21 @@ class LinkController
 		];
 		return $this->__linkModel->updateLink($newLink);
 	}
+
+	 // delete unuse link
+	function deleteUnuseLink()
+	{
+		$linkIds = [];
+
+		$associatedLink = $this->__userLinkModel->getDistinctField('link_id'); // all associated links with users
+
+		foreach ($associatedLink as $key => $value) {
+			array_push($linkIds, $value['link_id']); // get all link Id to array
+		}
+		$conditionRaw = "(" . implode(",", $linkIds) . ")"; // generate sql condition
+
+		$this->__linkModel->removeUnuseLink($conditionRaw);
+	}
 }
 $obj = new LinkController();
 $method = isset($_GET['m']) ? trim($_GET['m']) : 'index';

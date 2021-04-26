@@ -29,6 +29,19 @@ class UserLinkModel extends PDODriver
 		return $this->__data;
 	}
 
+	function getDistinctField($field)
+	{
+		$sql  = "SELECT DISTINCT {$field} FROM `user_link`";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			if ($stmt->execute()) {
+				$this->__data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__data;
+	}
+
 	function insertUserLink($userLink)
 	{
 		return $this->insert($userLink, 'user_link');
