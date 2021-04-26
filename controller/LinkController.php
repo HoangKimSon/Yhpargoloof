@@ -86,6 +86,42 @@ class LinkController
 		}
 	}
 
+	 // show edit form 
+	function edit()
+	{
+		$id = isset($_GET['id']) ? trim($_GET['id']) : "";
+		if (!$id) {
+			return header("Location:index.php?c=user&m=userLink");
+		}
+
+		$link = $this->__linkModel->getLinkById($id); // use in html
+		require_once "view/link/edit.html";
+	}
+
+	 // edit link, get data from $_POST
+	function doEdit()
+	{
+		if ($_SERVER["REQUEST_METHOD"] != "POST") {
+			return header("Location:index.php?c=user&m=userLink");
+		}
+
+		$originLink = isset($_POST['link']) ? trim($_POST['link']) : "";
+		$id = isset($_POST['id']) ? trim($_POST['id']) : "";
+		if (!$originLink || !$id) {
+			return header("Location:index.php?m=edit&id={$id}&mess=e");
+		}
+
+		$data = [
+			'origin_link' => $originLink,
+			'id' => $id
+		];
+
+		$this->__linkModel->updateLink($data);
+
+		$newLink = $this->__linkModel->getLinkById($id); // use in html file
+		return header("Location:index.php?c=user&m=userLink");
+	}
+
 	// increase number click to link, get data from $_POST
 	function doCount()
 	{

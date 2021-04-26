@@ -1,0 +1,8 @@
+<form action="?m=doEdit" method="POST">
+	<input type="hidden" name="id" value="<?php echo $link['id'] ?>">
+	<label>Your link: </label> <input type="text" name="link" value="<?php echo $link['origin_link']?>">
+	<button type="submit">Update link</button>
+	<?php if(isset($_GET['mess']) && $_GET['mess'] == 'e'): ?>
+	<p class="text-red"> You link must not empty</p>
+	<?php endif;?>
+</form>
