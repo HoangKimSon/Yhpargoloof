@@ -7,14 +7,17 @@
  */
 
 require_once BASE_PROJECT . "model/UserModel.php";
+require_once BASE_PROJECT . "model/UserLinkModel.php";
 
 class UserController
 {
 	private $__userModel;
+	private $__userLinkModel;
 
 	function __construct()
 	{
 		$this->__userModel = new UserModel();
+		$this->__userLinkModel = new UserLinkModel();
 	}
 	/**
 	 * Show reigster form
@@ -98,6 +101,18 @@ class UserController
 		} else {
 			return header("Location:index.php?c=user&m=login&mess=nf");
 		}
+	}
+
+	 // show all links of specific user
+	function userLink()
+	{
+		if (!$_SESSION["username"]) {
+			return header("Location:index.php?c=user&m=login");
+		}
+
+		// use in html file
+		$linkList = $this->__userLinkModel->getUserLink($_SESSION["userId"]);
+		require BASE_PROJECT . "view/user/userLink.html";
 	}
 }
 

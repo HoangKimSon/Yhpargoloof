@@ -1,3 +1,11 @@
+<?php if(!isset($_SESSION['username'])): ?>
+<a href="?c=user&m=login">Login</a>
+<a href="?c=user&m=register">Register</a>
+<?php else: ?>
+<p>Hello <?php echo $_SESSION['username']; ?>. You can see all your link at <a href="?c=user&m=userLink">here</a>
+</p>
+<?php endif; ?>
+
 <!-- Form generate link -->
 <form action="?m=doCreate" method="POST">
 	<label>Your link: </label> <input type="text" name="link">

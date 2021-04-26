@@ -1,0 +1,53 @@
+<p>This is all your link:</p>
+<!-- Show list link -->
+<table>
+  <tr class="text-center">
+    <td width="4%">Order</td>
+    <td width="30%">Origin link</td>
+    <td width="10%">Shorten link</td>
+    <td width="10%">User name</td>
+    <td width="5%"></td>
+    <td width="5%"></td>
+  </tr>
+  <?php $count = 0; foreach($linkList as $key => $link): $count++ ?>
+  <tr  class="text-center">
+    <td>
+      <?= $count ?>
+    </td>
+    <td class="text-left">
+      <?= $link['origin_link'] ?>
+    </td>
+    <td>
+      <a id="<?= $link['id'] ?>" href="<?= $link['origin_link'] ?>" target="_blank" onclick="increaseCounter(this.id)">
+        <?= $_SERVER['SERVER_NAME'] ."/" . $link['shorten_link'] ?>
+      </a>
+    </td>
+    <td>
+      <?= $link['username'] ?>
+    </td>
+    <td>
+      <a href="#">Edit</a>
+    </td>
+    <td>
+      <a href="#">Delete</a>
+    </td>
+  </tr>
+  <?php endforeach; ?>
+</table>
+<!-- /Show list link -->
+
+<script type="text/javascript">
+	const queryString = new URLSearchParams(window.location.search);
+	function increaseCounter(link) {
+		const linkId = queryString.get('link') || link;
+		let xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				console.info("Get data from server", this.responseText);
+				location.reload(true);
+			}
+		};
+		xhttp.open("GET", `?m=doCount&id=${linkId}`, true);
+		xhttp.send();
+	}
+</script>
