@@ -103,7 +103,7 @@ class UserController
 		}
 	}
 
-	 // show all links of specific user
+	// show all links of specific user
 	function userLink()
 	{
 		if (!$_SESSION["username"]) {
@@ -115,7 +115,7 @@ class UserController
 		require BASE_PROJECT . "view/user/userLink.html";
 	}
 
-	 // logout user
+	// logout user
 	function doLogout()
 	{
 		// remove session
