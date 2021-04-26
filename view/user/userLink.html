@@ -1,3 +1,12 @@
+<p> Hello
+  <?= $_SESSION['username'] ?>.
+</p>
+
+<!-- Naviagtion -->
+<p>If you want to generate new link, please click <a href="index.php">here.</a>
+</p>
+<!-- /Naviagtion -->
+
 <p>This is all your link:</p>
 <!-- Show list link -->
 <table>
@@ -29,7 +38,7 @@
       <a href="?m=edit&id=<?php echo $link['link_id'] ?>">Edit</a>
     </td>
     <td>
-      <a href="#">Delete</a>
+      <a href="?m=doDelete&id=<?php echo $link['link_id'] ?>">Delete</a>
     </td>
   </tr>
   <?php endforeach; ?>

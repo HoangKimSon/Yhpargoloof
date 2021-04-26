@@ -155,6 +155,22 @@ class PDODriver
 		return $this->__flag;
 	}
 
+	// remove one record
+	public function delete($table, $where)
+	{
+		$prKey = $this->__getPrimaryKey($table);
+		$sql  = "DELETE FROM {$table} WHERE {$prKey} = :{$prKey}";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			$stmt->bindParam(":{$prKey}", $where, PDO::PARAM_STR);
+			if ($stmt->execute()) {
+				$this->__flag = TRUE;
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__flag;
+	}
+
 	// count record in table
 	public function countAllData($table)
 	{

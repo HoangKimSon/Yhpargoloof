@@ -33,4 +33,19 @@ class UserLinkModel extends PDODriver
 	{
 		return $this->insert($userLink, 'user_link');
 	}
+
+	function deleteUserLink($userId, $linkId)
+	{
+		$sql  = "DELETE FROM `user_link` WHERE user_id = :user_id AND link_id = :link_id";
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt) {
+			$stmt->bindParam(":user_id", $userId, PDO::PARAM_STR);
+			$stmt->bindParam(":link_id", $linkId, PDO::PARAM_STR);
+			if ($stmt->execute()) {
+				$this->__flag = TRUE;
+			}
+			$stmt->closeCursor();
+		}
+		return $this->__flag;
+	}
 }

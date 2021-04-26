@@ -122,6 +122,16 @@ class LinkController
 		return header("Location:index.php?c=user&m=userLink");
 	}
 
+	 // delete link, get data from $_GET
+	function doDelete()
+	{
+		$this->__linkModel->deleteLink($_GET['id']); // remove link
+		$this->__userLinkModel->deleteUserLink($_SESSION['userId'], $_GET['id']); // remove associated link id with user id
+
+		return header("Location:index.php?c=user&m=userLink");
+	}
+
+
 	// increase number click to link, get data from $_POST
 	function doCount()
 	{

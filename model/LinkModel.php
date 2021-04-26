@@ -45,6 +45,11 @@ class LinkModel extends PDODriver
 		return $this->insert($data, 'link');
 	}
 
+	function deleteLink($id)
+	{
+		return $this->delete('link', $id);
+	}
+	
 	function countAllLink()
 	{
 		return $this->countAllData('link');
