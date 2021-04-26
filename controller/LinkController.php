@@ -80,7 +80,7 @@ class LinkController
 		}
 	}
 
-	 // show edit form 
+	// show edit form 
 	function edit()
 	{
 		$id = isset($_GET['id']) ? trim($_GET['id']) : "";
@@ -92,7 +92,7 @@ class LinkController
 		require_once "view/link/edit.html";
 	}
 
-	 // edit link, get data from $_POST
+	// edit link, get data from $_POST
 	function doEdit()
 	{
 		if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -116,7 +116,7 @@ class LinkController
 		return header("Location:index.php?c=user&m=userLink");
 	}
 
-	 // delete link, get data from $_GET
+	// delete link, get data from $_GET
 	function doDelete()
 	{
 		$this->__linkModel->deleteLink($_GET['id']); // remove link
@@ -145,7 +145,7 @@ class LinkController
 		return $this->__linkModel->updateLink($newLink);
 	}
 
-	 // delete unuse link
+	// delete unuse link
 	function deleteUnuseLink()
 	{
 		$linkIds = [];
@@ -156,10 +156,12 @@ class LinkController
 			array_push($linkIds, $value['link_id']); // get all link Id to array
 		}
 		$conditionRaw = "(" . implode(",", $linkIds) . ")"; // generate sql condition
-
+		
 		$this->__linkModel->removeUnuseLink($conditionRaw);
 	}
 }
-$obj = new LinkController();
-$method = isset($_GET['m']) ? trim($_GET['m']) : 'index';
-$obj->$method();
+if (php_sapi_name() != "cli") {
+	$obj = new LinkController();
+	$method = isset($_GET['m']) ? trim($_GET['m']) : 'index';
+	$obj->$method();
+} 

@@ -52,15 +52,16 @@ class LinkModel extends PDODriver
 
 	function removeUnuseLink($associatedLink)
 	{
+		$result = FALSE;
 		$sql  = "DELETE FROM `link` WHERE `id` NOT IN {$associatedLink} AND DATEDIFF(CURRENT_DATE, updated_at) > 30";
 		$stmt = $this->conn->prepare($sql);
 		if ($stmt) {
 			if ($stmt->execute()) {
-				$this->__flag = TRUE;
+				$result = TRUE;
 			}
 			$stmt->closeCursor();
 		}
-		return $this->__flag;
+		return $result;
 	}
 
 	function countAllLink()
