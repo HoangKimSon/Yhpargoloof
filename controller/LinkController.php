@@ -55,12 +55,6 @@ class LinkController
 			return header("Location:index.php?code=400");
 		}
 
-		// check if link is exist
-		$oldLink = $this->__linkModel->geLinkByName($originLink);
-		if ($oldLink) {
-			return header("Location:index.php?mess=d");
-		}
-
 		// shorten link
 		$shortenLink = base_convert(time(), 10, 32);;
 

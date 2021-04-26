@@ -10,10 +10,8 @@
 <form action="?m=doCreate" method="POST">
 	<label>Your link: </label> <input type="text" name="link">
 	<button type="submit">Generate link</button>
-	<?php if(isset($_GET['mess']) && $_GET['mess'] == 'd'): ?>
-	<p class="text-red"> This link is already exist, please input other link</p>
-	<?php endif;?>
 
+<!-- Show all error -->
 	<?php if(isset($newLink)): ?>
 	<p class=""> Your new link is
 		<a id="<?= $newLink['id'] ?>" href="<?= $newLink['origin_link'] ?>" target="_blank"
@@ -22,6 +20,8 @@
 		</a>
 	</p>
 	<?php endif;?>
+<!-- /Show all error -->
+
 </form>
 <!-- /Form generate link -->
 
